@@ -1,27 +1,22 @@
-import { useCallback, useState } from "react";
+import { memo, useCallback, useState } from "react";
 import { HStack, VStack } from "native-base";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import { MaterialIcons, SimpleLineIcons } from '@expo/vector-icons';
 
 import { AppImage, ExplicitIcons } from "../../../components";
 import { TracksResponse } from "../../../types/tracks";
-import { ArtistScreenProps } from "./artistScreen.types";
+import { useAppDispatch } from "../../../store/hooks";
+import { createPlaylist } from "../../../store/features/player.slice";
 
 
 interface ArtistTopTracksProps {
     tracks: TracksResponse['tracks'];
 }
 
-
-export const ArtistTopTracks = (
-    { tracks, 
-        // navigation, route 
-    }: ArtistTopTracksProps
-) => {
+const ArtistTopTracks = ({ tracks }: ArtistTopTracksProps) => {
     const [favorites, setFavorites] = useState<string[]>([]);
     const [playing, setPlaying] = useState<string>("");
-
-    console.log({ favorites })
+    const dispatch = useAppDispatch();
 
     const handleSelectedAsFavourite = (id: string) => {
         setFavorites((prevState) => {
@@ -41,12 +36,22 @@ export const ArtistTopTracks = (
         setPlaying(trackId);
     }
 
+    const handleCreatePlaylist = (tracks: TracksResponse['tracks'], index: number) => {
+        // if the playlist isnt different avoiding dispatching
+        dispatch(createPlaylist({ 
+            tracks,
+            currentTrackIndex: index,
+            playlistType: tracks.length > 1 ? "album" : "single"
+        }));
+    }
+
     return (
         <View style={styles.container}>
             {tracks.map((track, index) => (
                 <Pressable 
                     onPress={() => {
                         handlePlayTrack(track.id)
+                        handleCreatePlaylist(tracks, index);
                     }}
                     key={track.id}
                 >
@@ -60,7 +65,7 @@ export const ArtistTopTracks = (
                             imageType="album"
                         />
 
-                        <VStack alignItems="flex-start" flex={1}>
+                        <VStack alignItems="flex-start" flex={1} space={1}>
                             <Text  
                                 style={{
                                     color: playing === track.id ? "#57B65F" : "#fff",
@@ -70,7 +75,7 @@ export const ArtistTopTracks = (
                                 {track.name} {" "}
                             </Text>
 
-                            <HStack space={2}>
+                            <HStack space={2} alignItems="center">
                                 {track.explicit && <ExplicitIcons />}
 
                                 <Text style={styles.textStyles}>
@@ -103,11 +108,10 @@ export const ArtistTopTracks = (
                         </Pressable>
                     </HStack>
                 </Pressable>
-
             ))}
         </View>
     )
-}
+};
 
 const styles = StyleSheet.create({
     container: {
@@ -125,3 +129,5 @@ const styles = StyleSheet.create({
         opacity: 0.6
     }
 })
+
+export default memo(ArtistTopTracks);

@@ -3,10 +3,14 @@ export { default as AppTouchableButton} from './core/TouchableButton';
 export { default as AppModal} from './core/AppModal';
 export { AppPill } from './core/AppPill';
 export { AppImage } from './core/AppImage';
+export { AppNoData } from './core/AppNoData';
+export { AppError } from './core/AppError';
 
 
 export { HomeScreenHeader } from './features/HomeScreenHeader';
 export { LibraryScreenHeader } from './features/LibraryScreenHeader';
+export { AppRainMeter } from './features/AppRainMeter';
+export { Player } from './features/Player';
 
 // TEMPLATES
 export { default as AppScreenHeader} from './templates/ScreenHeader';

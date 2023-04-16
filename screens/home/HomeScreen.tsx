@@ -1,8 +1,9 @@
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { ScrollView, StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { HomeScreenHeader } from "../../components";
-import { HomeScreenStackNavigationProps } from "./homeScreen.types";
+import { HomeScreenStackNavigationProps } from "../../navigation/home/home.navigation.types";
 import { FavouriteArtistSection } from "./sections/FavouriteArtists";
 import { NewReleaseSection } from "./sections/NewReleases";
 
@@ -23,6 +24,8 @@ export const HomeScreen = ({ navigation, route }: HomeScreenStackNavigationProps
                         <SectionComponent navigation={navigation} route={route} />
                     </View>
                 ))}
+
+                
 
                 {/* <NewReleaseSection navigation={navigation} route={route} />
 
