@@ -7,22 +7,21 @@ const queryClientManager = new QueryClientManager({queryClient});
 
 Reactotron
   .use(reactotronReactQuery(queryClientManager))
-  .setAsyncStorageHandler!(AsyncStorage) // AsyncStorage would either come from `react-native` or `@react-native-community/async-storage` depending on where you get it from
+  .setAsyncStorageHandler!(AsyncStorage)
   .configure({
     name: "React Native Demo",
-    host: '172.20.10.2', // when using expo use machine's ip address
-    // host: '192.168.0.140',
+    host: '',
     onDisconnect: () => {
       queryClientManager.unsubscribe();
     }
   })
   .useReactNative({
-    asyncStorage: false, // there are more options to the async storage.
-    networking: { // optionally, you can turn it off with false.
+    asyncStorage: false, 
+    networking: { 
       ignoreUrls: /symbolicate|127.0.0.1/
     },
-    editor: false, // there are more options to editor
-    errors: { veto: (stackFrame) => false }, // or turn it off with false
-    overlay: false, // just turning off overlay
+    editor: false, 
+    errors: { veto: (stackFrame) => false }, 
+    overlay: false, 
   })
   .connect();
